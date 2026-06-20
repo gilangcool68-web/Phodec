@@ -1,5 +1,4 @@
-name: Build Android APK with Buildozer
-
+name: Build Android APK
 on:
   push:
     branches: [ "main", "master" ]
@@ -7,45 +6,23 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
-
+    runs-on: ubuntu-20.04
     steps:
-    - name: Checkout Source Code
-      uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
-
-    - name: Set up Java Development Kit
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-
-    - name: Install System Dependencies
+        python-version: '3.9'
+    - name: Install Tools
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev cmake python3-dev
-        sudo apt-get install -y autoconf automake libtool pkg-config zlib1g-dev
-        sudo apt-get install -y libltdl-dev libgmp-dev libmpfr-dev libmpc-dev
+        sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev cmake python3-dev openjdk-11-jdk-headless autoconf automake libtool pkg-config zlib1g-dev
         pip install --upgrade pip
-        pip install --upgrade buildozer cython requests
-
-    - name: Accept Android Licenses Automatically
+        pip install "buildozer==1.5.0" "cython<3.0.0" requests
+    - name: Build
       run: |
-        yes | sdkmanager --licenses || true
-
-    - name: Build Android APK
-      run: |
-        buildozer -v android debug
-
-    - name: Upload Finished APK Artifact
+        yes | buildozer -v android debug
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: Finished-Android-APK
+        name: Finished-APK
         path: bin/*.apk
