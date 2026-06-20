@@ -6,10 +6,10 @@
 [app]
 
 # (str) Title of your application
-title = Image Analytic
+title = Photo Detector App
 
 # (str) Package name
-package.name = myapp
+package.name = photodetectorapp
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test
@@ -75,7 +75,7 @@ orientation = portrait
 # author = © Copyright Info
 
 # Kivy version to use
-osx.kivy_version = 2.2.0
+osx.kivy_version = 2.3.0
 
 #
 # Android specific
@@ -103,7 +103,7 @@ fullscreen = 0
 
 # (list) Permissions
 # (See https://python-for-android.readthedocs.io/en/latest/buildoptions.html for all the supported syntaxes and properties)
-#android.permissions = android.permission.CAMERA, android.permission.ACCESS_FINE_LOCATION, android.permission.ACCESS_COARSE_LOCATION, android.permission.INTERNET
+#android.permissions = CAMERA, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
