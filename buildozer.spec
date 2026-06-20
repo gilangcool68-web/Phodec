@@ -47,6 +47,10 @@ android.minapi = 21
 # (int) Android NDK API to use.
 android.ndk_api = 21
 
+# (str) Android NDK version to use
+# DIKUNCI KE 25b AGAR TIDAK CRASH DENGAN PYTHON-FOR-ANDROID
+android.ndk = 25b
+
 # (list) The Android archs to build for
 android.archs = arm64-v8a, armeabi-v7a
 
