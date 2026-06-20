@@ -34,7 +34,7 @@ fullscreen = 0
 
 # (list) Permissions
 # PENTING: Pagar dilepas agar aplikasi diizinkan mengambil GPS dan Kamera HP
-android.permissions = CAMERA, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
+android.permissions = CAMERA, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
 
 # (int) Target Android API
 # Dikunci ke API 31 & Build Tools 31 agar server GitHub tidak memicu download versi 37 yang lisensinya mampet
