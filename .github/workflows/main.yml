@@ -6,7 +6,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # Turun ke versi OS yang lebih stabil buat Buildozer
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v4
     
@@ -14,34 +15,16 @@ jobs:
       with:
         python-version: '3.10'
         
-    - name: Install System Dependencies
+    - name: Install Dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev cmake python3-dev autoconf automake libtool pkg-config zlib1g-dev openjdk-17-jdk-headless
         pip install --upgrade pip
         pip install "buildozer==1.5.0" "cython<3.0.0" requests
 
-    - name: Inject Android Licenses (Bypass Total)
-      run: |
-        # 1. Buat folder tujuan yang biasa diincar oleh buildozer
-        mkdir -p ~/.android
-        mkdir -p /home/runner/.buildozer/android/platform/android-sdk/licenses
-        
-        # 2. Ambil lisensi resmi dari system GitHub
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
-        
-        # 3. Kloning dan paksa lisensi tersebut masuk ke folder lokal Buildozer
-        cp -r $ANDROID_HOME/licenses/* /home/runner/.buildozer/android/platform/android-sdk/licenses/ || true
-        
-        # 4. Suntikan kode hash persetujuan lisensi build-tools secara manual (Termasuk versi 33 s/d 37)
-        echo -e "\n24333f1a63b68bfa3d3d30bc3db847a28e05e115" >> /home/runner/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-        echo -e "\n8c334f2af9d6d59d30a1e36526012840d304405a" >> /home/runner/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-
     - name: Build with Buildozer
       run: |
-        # Kunci environment variabel agar sistem tidak melompat ke versi lain
-        export ANDROIDAPI=31
-        export ANDROIDNDKAPI=21
+        # Jalankan tanpa trik folder aneh-aneh, biarkan dia download SDK-nya sendiri
         buildozer -v android debug
         
     - name: Upload APK
