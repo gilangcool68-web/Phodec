@@ -19,15 +19,13 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev cmake python3-dev autoconf automake libtool pkg-config zlib1g-dev openjdk-17-jdk-headless
         pip install --upgrade pip
-        
-        # INI KUNCINYA: Kita install Buildozer langsung dari GitHub mereka (versi Master).
-        # Ini menyingkirkan bug "tools/bin/sdkmanager" yang ada di versi 1.5.0.
+        # Pake Buildozer versi terbaru langsung dari GitHub buat ngindarin bug folder jadul
         pip install git+https://github.com/kivy/buildozer.git "cython<3.0.0" requests
 
     - name: Build with Buildozer
       run: |
-        # Perintah 'yes' di depan buat antisipasi kalau Buildozer minta persetujuan lisensi mendadak
-        yes | buildozer -v android debug
+        # Jalan murni tanpa pipa "yes"
+        buildozer -v android debug
         
     - name: Upload APK
       uses: actions/upload-artifact@v4
