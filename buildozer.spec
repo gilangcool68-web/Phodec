@@ -48,7 +48,7 @@ android.minapi = 21
 android.ndk_api = 21
 
 # === TAMBAHKAN DUA BARIS INI BIAR GAK DOWNLOAD VERSI 37 ===
-android.skip_update = True
+android.skip_update = False
 android.accept_sdk_license = True
 
 # (list) The Android archs to build for
