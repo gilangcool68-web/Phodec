@@ -21,23 +21,15 @@ jobs:
         pip install --upgrade pip
         pip install "buildozer==1.5.0" "cython<3.0.0" requests
 
-    - name: Pre-install SDK and Accept Licenses
+    - name: Fix SDK Environment
       run: |
-        # 1. Bikin folder lisensi manual
-        mkdir -p /home/runner/.android
-        touch /home/runner/.android/repositories.cfg
-        mkdir -p /home/runner/.buildozer/android/platform/android-sdk/licenses/
-        
-        # 2. Paksa terima lisensi dari sistem Android SDK
-        # Kita echo-kan lisensi ke dalam file agar SDK manager menganggap sudah disetujui
-        echo "8933bad161af4178b1185d1a37fbf41ea5261c55" > /home/runner/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-        echo "d56f5187473751e9f906f34806a616238b1f7d54" >> /home/runner/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-        echo "24333f1a63b68bfa3d3d30bc3db847a28e05e115" >> /home/runner/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+        # Memastikan folder SDK yang dicari buildozer terhubung ke lokasi SDK sistem yang valid
+        mkdir -p /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools
+        ln -s $ANDROID_HOME/cmdline-tools/latest /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest
 
     - name: Build with Buildozer
       run: |
-        # Buildozer biasanya mencoba mengunduh sendiri, 
-        # dengan lisensi yang sudah kita suntik di atas, dia harusnya lancar.
+        # Jalankan murni, karena spec lu sudah benar
         buildozer -v android debug
         
     - name: Upload APK
