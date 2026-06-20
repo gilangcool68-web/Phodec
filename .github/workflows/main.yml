@@ -6,7 +6,6 @@ on:
 
 jobs:
   build:
-    # Turun ke versi OS yang lebih stabil buat Buildozer
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v4
@@ -15,16 +14,26 @@ jobs:
       with:
         python-version: '3.10'
         
-    - name: Install Dependencies
+    - name: Install System Dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev cmake python3-dev autoconf automake libtool pkg-config zlib1g-dev openjdk-17-jdk-headless
         pip install --upgrade pip
         pip install "buildozer==1.5.0" "cython<3.0.0" requests
 
+    - name: Pre-install SDK and Accept Licenses
+      run: |
+        # Inisialisasi SDK dan paksa terima lisensi agar Buildozer tidak "mogok"
+        mkdir -p ~/.android
+        touch ~/.android/repositories.cfg
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+        # Install komponen yang sering missing: build-tools dan platform-tools
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;31.0.0" "platform-tools" "platforms;android-31"
+
     - name: Build with Buildozer
       run: |
-        # Jalankan tanpa trik folder aneh-aneh, biarkan dia download SDK-nya sendiri
+        # Hapus sisa-sisa build sebelumnya agar bersih total
+        buildozer clean
         buildozer -v android debug
         
     - name: Upload APK
