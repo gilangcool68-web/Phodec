@@ -21,15 +21,21 @@ jobs:
         pip install --upgrade pip
         pip install "buildozer==1.5.0" "cython<3.0.0" requests
 
-    - name: Fix SDK Environment
+    - name: Fix SDK Path (Jembatan Manual)
       run: |
-        # Memastikan folder SDK yang dicari buildozer terhubung ke lokasi SDK sistem yang valid
-        mkdir -p /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools
-        ln -s $ANDROID_HOME/cmdline-tools/latest /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest
+        # Buat struktur folder yang dicari Buildozer
+        mkdir -p /home/runner/.buildozer/android/platform/android-sdk/tools/bin
+        
+        # Buat symlink biar Buildozer nemu sdkmanager di tempat yang dia mau
+        ln -s $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager /home/runner/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
+        
+        # Pastikan lisensi ada (Suntikan langsung ke folder yang dicari)
+        mkdir -p /home/runner/.buildozer/android/platform/android-sdk/licenses
+        cp -r $ANDROID_HOME/licenses/* /home/runner/.buildozer/android/platform/android-sdk/licenses/ || true
 
     - name: Build with Buildozer
       run: |
-        # Jalankan murni, karena spec lu sudah benar
+        # Buildozer akan jalan dengan percaya diri karena foldernya sudah ada
         buildozer -v android debug
         
     - name: Upload APK
