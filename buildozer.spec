@@ -20,7 +20,7 @@ version = 0.1
 
 # (list) Application requirements
 # Diselaraskan versinya agar pas dengan API 31 dan anti-bentrok Cython
-requirements = python3,kivy==2.2.1,kivymd==1.1.1,requests,plyer
+requirements = python3,kivy,kivymd,requests,plyer
 
 # (list) Supported orientations
 orientation = portrait
