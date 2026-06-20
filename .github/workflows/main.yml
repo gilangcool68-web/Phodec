@@ -21,21 +21,23 @@ jobs:
         pip install --upgrade pip
         pip install "buildozer==1.5.0" "cython<3.0.0" requests
 
-    - name: Fix SDK Path (Jembatan Manual)
+    - name: Link SDK to Buildozer
       run: |
-        # Buat struktur folder yang dicari Buildozer
-        mkdir -p /home/runner/.buildozer/android/platform/android-sdk/tools/bin
+        # 1. Buat folder yang dicari Buildozer
+        mkdir -p /home/runner/.buildozer/android/platform/android-sdk
         
-        # Buat symlink biar Buildozer nemu sdkmanager di tempat yang dia mau
-        ln -s $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager /home/runner/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
+        # 2. Paksa Buildozer memakai SDK yang sudah terinstall di GitHub Runner
+        # Ini adalah trik agar Buildozer tidak mencoba download SDK sendiri
+        export ANDROID_HOME=/usr/local/lib/android/sdk
+        echo "sdk.dir=$ANDROID_HOME" > local.properties
         
-        # Pastikan lisensi ada (Suntikan langsung ke folder yang dicari)
-        mkdir -p /home/runner/.buildozer/android/platform/android-sdk/licenses
-        cp -r $ANDROID_HOME/licenses/* /home/runner/.buildozer/android/platform/android-sdk/licenses/ || true
+        # 3. Buat symlink agar Buildozer "mengira" SDK-nya ada di sana
+        ln -s $ANDROID_HOME /home/runner/.buildozer/android/platform/android-sdk/platforms
+        ln -s $ANDROID_HOME/cmdline-tools /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools
 
     - name: Build with Buildozer
       run: |
-        # Buildozer akan jalan dengan percaya diri karena foldernya sudah ada
+        # Eksekusi build
         buildozer -v android debug
         
     - name: Upload APK
