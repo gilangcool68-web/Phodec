@@ -12,15 +12,27 @@ jobs:
     
     - uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: '3.10'
         
-    - name: Install Tools
+    - name: Install System Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev cmake python3-dev openjdk-17-jdk-headless autoconf automake libtool pkg-config zlib1g-dev
+        sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev cmake python3-dev autoconf automake libtool pkg-config zlib1g-dev openjdk-17-jdk-headless
         pip install --upgrade pip
-        pip install "buildozer==1.5.0" "cython<3.0.0" requests
+        # Pakai Buildozer versi terbaru agar sinkron dengan Ubuntu 24.04
+        pip install --upgrade buildozer cython requests
         
+    - name: Force Accept Android SDK Licenses
+      run: |
+        # Kita buatkan folder dan langsung setujui lisensi SDK bawaan github sebelum buildozer jalan
+        mkdir -p ~/.android
+        touch ~/.android/repositories.cfg
+        if [ -d "$ANDROID_HOME/cmdline-tools/latest/bin" ]; then
+          echo y | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+        elif [ -d "$ANDROID_HOME/tools/bin" ]; then
+          echo y | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+        fi
+
     - name: Build with Buildozer
       run: |
         buildozer -v android debug
