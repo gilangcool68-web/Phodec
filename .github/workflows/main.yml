@@ -6,7 +6,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    # GANTI KE LATEST BIAR GAK PAKAI ANTRE LAMA!
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
@@ -15,7 +16,7 @@ jobs:
     - name: Install Tools
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev cmake python3-dev openjdk-11-jdk-headless autoconf automake libtool pkg-config zlib1g-dev
+        sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev cmake python3-dev openjdk-17-jdk-headless autoconf automake libtool pkg-config zlib1g-dev
         pip install --upgrade pip
         pip install "buildozer==1.5.0" "cython<3.0.0" requests
     - name: Build
