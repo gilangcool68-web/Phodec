@@ -6,22 +6,25 @@ on:
 
 jobs:
   build:
-    # GANTI KE LATEST BIAR GAK PAKAI ANTRE LAMA!
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    
     - uses: actions/setup-python@v5
       with:
         python-version: '3.9'
+        
     - name: Install Tools
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev cmake python3-dev openjdk-17-jdk-headless autoconf automake libtool pkg-config zlib1g-dev
         pip install --upgrade pip
         pip install "buildozer==1.5.0" "cython<3.0.0" requests
-    - name: Build
+        
+    - name: Build with Buildozer
       run: |
-        yes | buildozer -v android debug
+        buildozer -v android debug
+        
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
