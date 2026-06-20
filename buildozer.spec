@@ -57,6 +57,9 @@ android.archs = arm64-v8a, armeabi-v7a
 # (bool) enables Android auto backup feature
 android.allow_backup = True
 
+# (bool) Otomatis terima lisensi SDK (INI YANG BIKIN AIDL BISA TER-INSTALL)
+android.accept_sdk_license = True
+
 #
 # iOS specific
 #
