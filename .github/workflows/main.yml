@@ -19,25 +19,15 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev cmake python3-dev autoconf automake libtool pkg-config zlib1g-dev openjdk-17-jdk-headless
         pip install --upgrade pip
-        pip install "buildozer==1.5.0" "cython<3.0.0" requests
-
-    - name: Pre-install Build Tools
-      run: |
-        # 1. Terima semua lisensi SDK sistem
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
         
-        # 2. Paksa install build-tools 31.0.0 yang sesuai dengan spec lu
-        # Ini mencegah Buildozer mencoba download versi 37 yang bikin error
-        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;31.0.0"
-        
-        # 3. Pastikan folder build-tools bisa diakses Buildozer
-        mkdir -p /home/runner/.buildozer/android/platform/android-sdk/build-tools
-        ln -s $ANDROID_HOME/build-tools/31.0.0 /home/runner/.buildozer/android/platform/android-sdk/build-tools/31.0.0
+        # INI KUNCINYA: Kita install Buildozer langsung dari GitHub mereka (versi Master).
+        # Ini menyingkirkan bug "tools/bin/sdkmanager" yang ada di versi 1.5.0.
+        pip install git+https://github.com/kivy/buildozer.git "cython<3.0.0" requests
 
     - name: Build with Buildozer
       run: |
-        # Jalankan buildozer
-        buildozer -v android debug
+        # Perintah 'yes' di depan buat antisipasi kalau Buildozer minta persetujuan lisensi mendadak
+        yes | buildozer -v android debug
         
     - name: Upload APK
       uses: actions/upload-artifact@v4
