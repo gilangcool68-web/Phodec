@@ -53,7 +53,7 @@ android.ndk_api = 21
 
 # (str) Android NDK version to use
 # DIKUNCI KE 25b AGAR TIDAK CRASH DENGAN PYTHON-FOR-ANDROID
-android.ndk = 25b
+android.ndk = 26b
 
 # Use master branch for more stable P4A builds with NDK 25b
 p4a.branch = master
