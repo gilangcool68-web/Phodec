@@ -22,9 +22,9 @@ version = 0.1
 icon.filename = uploads/icon.png
 
 # (list) Application requirements
-# Updated Kivy to 2.3.0 for better NDK 25b compatibility
-# Pin Python to 3.11 because Kivy 2.3.0 is not compatible with CPython 3.14 C-API changes
-requirements = python3==3.11.6,hostpython3==3.11.6,kivy==2.3.0,kivymd==0.104.2,requests==2.31.0,plyer,pyjnius
+# Updated to use Kivy 2.2.1 for better Android build compatibility
+# Pin Python to 3.11 for stability
+requirements = python3==3.11.6,hostpython3==3.11.6,kivy==2.2.1,kivymd==0.104.2,requests==2.31.0,plyer,pyjnius
 
 # (list) Supported orientations
 orientation = portrait
