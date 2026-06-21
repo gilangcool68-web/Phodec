@@ -23,7 +23,8 @@ icon.filename = uploads/icon.png
 
 # (list) Application requirements
 # Updated for better compatibility: Kivy 2.2.1 stable, matching KivyMD version
-requirements = python3,kivy==2.2.1,kivymd==0.104.2,requests==2.31.0,plyer,pyjnius
+# Hapus semua embel-embel python3==...
+requirements = kivy==2.2.1,kivymd==0.104.2,requests==2.31.0,plyer,pyjnius
 
 # (list) Supported orientations
 orientation = portrait
