@@ -27,7 +27,7 @@ jobs:
         python -m venv venv
         source venv/bin/activate
         pip install --upgrade pip setuptools wheel
-        pip install cython==0.29.37 buildozer requests
+        pip install cython==0.29.36 buildozer requests
 
     - name: Build
       run: |
