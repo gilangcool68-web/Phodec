@@ -20,7 +20,8 @@ version = 0.1
 
 # (list) Application requirements
 # Updated Kivy to 2.3.0 for better NDK 25b compatibility
-requirements = python3,kivy==2.3.0,kivymd==0.104.2,requests==2.31.0,plyer,pyjnius
+# Pin Python to 3.11 because Kivy 2.3.0 is not compatible with CPython 3.14 C-API changes
+requirements = python3==3.11.6,kivy==2.3.0,kivymd==0.104.2,requests==2.31.0,plyer,pyjnius
 
 # (list) Supported orientations
 orientation = portrait
