@@ -55,8 +55,11 @@ android.ndk_api = 21
 # DIKUNCI KE 25b AGAR TIDAK CRASH DENGAN PYTHON-FOR-ANDROID
 android.ndk = 26b
 
-# Use master branch for more stable P4A builds with NDK 25b
+# Use master branch for more stable P4A builds with NDK 26b
 p4a.branch = master
+
+# Pin to a stable P4A version for reproducible builds
+p4a.version = 2024.01.01
 
 # (list) The Android archs to build for
 android.archs = arm64-v8a, armeabi-v7a
