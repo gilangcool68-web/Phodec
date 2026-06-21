@@ -18,6 +18,9 @@ source.include_exts = py,png,jpg,kv,atlas,pxi
 # (str) Application versioning (method 1)
 version = 0.1
 
+# (str) Icon of the application
+icon.filename = uploads/icon.png
+
 # (list) Application requirements
 # Updated Kivy to 2.3.0 for better NDK 25b compatibility
 # Pin Python to 3.11 because Kivy 2.3.0 is not compatible with CPython 3.14 C-API changes
