@@ -1,4 +1,14 @@
-steps:
+name: Build Android APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
     - uses: actions/checkout@v4
 
     - name: Setup Java 17
@@ -16,17 +26,19 @@ steps:
         sudo apt-get update
         sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev cmake python3-dev autoconf automake libtool pkg-config zlib1g-dev openjdk-17-jdk-headless
         pip install --upgrade pip
+        # Pake Buildozer versi terbaru langsung dari GitHub
         pip install git+https://github.com/kivy/buildozer.git "cython<3.0.0" requests
 
     - name: Clean build caches
       run: |
-        echo "Cleaning build caches..."
+        echo "Cleaning build caches to force rebuild of pinned Python and p4a artifacts"
         rm -rf .buildozer || true
         rm -rf ~/.buildozer || true
         rm -rf ~/.local/share/python-for-android || true
 
     - name: Build with Buildozer
       run: |
+        # Jalan murni tanpa pipa "yes"
         buildozer -v android debug
         
     - name: Upload APK
