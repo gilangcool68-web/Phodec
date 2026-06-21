@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = Photo Detector App
+title = Phodec
 
 # (str) Package name
 package.name = photodetectorapp
