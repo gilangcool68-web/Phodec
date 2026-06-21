@@ -81,7 +81,7 @@ class PhotoDetectorApp(MDApp):
 
         try:
             # Endpoint resmi sesuai dokumentasi ExifTools
-            TARGET_URL = "https://exiftools.com/api/v1/extract"
+            TARGET_URL = "http://127.0.0.1:5000/api/upload"
             
             # ✅ PERBAIKAN: Gunakan environment variable (lebih aman)
             MY_API_KEY = os.environ.get('EXIFTOOLS_API_KEY', "87aeb8a6ca77bc4f")
