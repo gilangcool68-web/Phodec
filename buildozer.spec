@@ -20,7 +20,7 @@ version = 0.1
 
 # (list) Application requirements
 # Diselaraskan versinya agar pas dengan API 31 dan anti-bentrok Cython
-requirements = python3,kivy,kivymd==1.0.2,requests==2.31.0,plyer
+requirements = python3,kivy==2.2.1,kivymd==0.104.2,requests==2.31.0,plyer, pyjnius
 
 # (list) Supported orientations
 orientation = portrait
@@ -34,7 +34,7 @@ fullscreen = 0
 
 # (list) Permissions
 # PENTING: Pagar dilepas agar aplikasi diizinkan mengambil GPS dan Kamera HP
-android.permissions = CAMERA, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
+android.permissions = CAMERA, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, REQUEST_INSTALL_PACKAGES
 
 # (int) Target Android API
 # Dikunci ke API 31 & Build Tools 31 agar server GitHub tidak memicu download versi 37 yang lisensinya mampet
