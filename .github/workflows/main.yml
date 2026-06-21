@@ -26,7 +26,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev cmake python3-dev autoconf automake libtool pkg-config zlib1g-dev openjdk-17-jdk-headless
         pip install --upgrade pip
-        pip install git+https://github.com/kivy/buildozer.git "cython<3.0.0"
+        pip install "cython==0.29.37" git+https://github.com/kivy/buildozer.git
 
     - name: Build with Buildozer
       run: |
