@@ -13,14 +13,14 @@ package.domain = org.test
 source.dir = .
 
 # (list) Source files to include (leave empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,png,jpg,kv,atlas,pxi
 
 # (str) Application versioning (method 1)
 version = 0.1
 
 # (list) Application requirements
-# Diselaraskan versinya agar pas dengan API 31 dan anti-bentrok Cython
-requirements = python3,kivy==2.2.1,kivymd==0.104.2,requests==2.31.0,plyer, pyjnius
+# Updated Kivy to 2.3.0 for better NDK 25b compatibility
+requirements = python3,kivy==2.3.0,kivymd==0.104.2,requests==2.31.0,plyer,pyjnius
 
 # (list) Supported orientations
 orientation = portrait
