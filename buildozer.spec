@@ -21,10 +21,8 @@ version = 0.1
 # (str) Icon of the application
 icon.filename = uploads/icon.png
 
-# (list) Application requirements
-# Updated for better compatibility: Kivy 2.2.1 stable, matching KivyMD version
-# Hapus semua embel-embel python3==...
-requirements = kivy==2.2.1,kivymd==0.104.2,requests==2.31.0,plyer,pyjnius
+# KEMBALI KE BASIC: Tanpa embel-embel pyjnius
+requirements = python3,kivy==2.3.0,kivymd==0.104.2,requests==2.31.0,plyer
 
 # (list) Supported orientations
 orientation = portrait
@@ -36,12 +34,10 @@ orientation = portrait
 # (bool) Indicate if the application should be fullscreen or not
 fullscreen = 0
 
-# (list) Permissions
-# PENTING: Pagar dilepas agar aplikasi diizinkan mengambil GPS dan Kamera HP
-android.permissions = CAMERA, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, REQUEST_INSTALL_PACKAGES
+# HAPUS IZIN REQUEST_INSTALL_PACKAGES
+android.permissions = CAMERA, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
 
 # (int) Target Android API
-# Dikunci ke API 31 & Build Tools 31 agar server GitHub tidak memicu download versi 37 yang lisensinya mampet
 android.api = 31
 android.build_tools_version = 31.0.0
 
@@ -51,15 +47,8 @@ android.minapi = 21
 # (int) Android NDK API to use.
 android.ndk_api = 21
 
-# (str) Android NDK version to use
-# DIKUNCI KE 25b AGAR TIDAK CRASH DENGAN PYTHON-FOR-ANDROID
-android.ndk = 26b
-
-# Use master branch for more stable P4A builds with NDK 26b
-p4a.branch = master
-
-# Pin to a stable P4A version for reproducible builds
-p4a.version = 2024.01.01
+# Kembalikan ke NDK yang terbukti paling stabil buat Kivy
+android.ndk = 25b
 
 # (list) The Android archs to build for
 android.archs = arm64-v8a, armeabi-v7a
@@ -67,7 +56,7 @@ android.archs = arm64-v8a, armeabi-v7a
 # (bool) enables Android auto backup feature
 android.allow_backup = True
 
-# (bool) Otomatis terima lisensi SDK (INI YANG BIKIN AIDL BISA TER-INSTALL)
+# (bool) Otomatis terima lisensi SDK
 android.accept_sdk_license = True
 
 #
