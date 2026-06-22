@@ -11,10 +11,10 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4  # <-- Udah di-update ke v4
 
     - name: Set up Python 3.11
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5  # <-- Udah di-update ke v5 biar lebih aman
       with:
         python-version: '3.11'
 
@@ -35,7 +35,7 @@ jobs:
         TERM: xterm
 
     - name: Upload APK Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # <-- Udah di-update ke v4 (Ini yang bikin error tadi)
       with:
         name: Phodec-APK-Murni
         path: bin/*.apk
