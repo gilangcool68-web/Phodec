@@ -13,11 +13,11 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # --- INI BAGIAN YANG JADI OBATNYA (Ubah ke Python 3.10) ---
-    - name: Set up Python 3.10
+    # --- KITA KEMBALIKAN KE 3.11 BIAR SAMA KAYAK BUILDOZER.SPEC ---
+    - name: Set up Python 3.11
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: '3.11'
 
     - name: Install System Dependencies
       run: |
@@ -31,8 +31,7 @@ jobs:
 
     - name: Build APK with Buildozer
       run: |
-        # Tambahan 'yes |' untuk nembus prompt otomatis kalau server minta persetujuan lisensi
-        yes | buildozer android debug
+        buildozer android debug
       env:
         TERM: xterm
 
