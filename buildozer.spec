@@ -22,7 +22,7 @@ version = 0.1
 icon.filename = uploads/icon.png
 
 # KEMBALI KE BASIC: Tanpa embel-embel pyjnius
-requirements = python3==3.14.2,kivy==2.3.0,kivymd==0.104.2,requests==2.31.0,plyer
+requirements = python3==3.11.4,hostpython3==3.11.4,kivy==2.3.0,kivymd==0.104.2,requests==2.31.0,plyer
 
 # (list) Supported orientations
 orientation = portrait
