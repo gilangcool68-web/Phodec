@@ -21,8 +21,8 @@ version = 0.1
 # (str) Icon of the application
 icon.filename = uploads/icon.png
 
-# KEMBALI KE BASIC: Tanpa embel-embel pyjnius
-requirements = python3==3.11.4,hostpython3==3.11.4,kivy==2.3.0,kivymd==1.0.2,requests==2.31.0,plyer
+# Use compatible versions with Android wheel support
+requirements = python3==3.11.4,hostpython3==3.11.4,kivy==2.2.1,kivymd==0.104.2,requests==2.31.0,plyer
 
 # (list) Supported orientations
 orientation = portrait
@@ -34,7 +34,7 @@ orientation = portrait
 # (bool) Indicate if the application should be fullscreen or not
 fullscreen = 0
 
-# HAPUS IZIN REQUEST_INSTALL_PACKAGES
+# Android permissions
 android.permissions = CAMERA, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
 
 # (int) Target Android API
@@ -47,7 +47,7 @@ android.minapi = 21
 # (int) Android NDK API to use.
 android.ndk_api = 21
 
-# Kembalikan ke NDK yang terbukti paling stabil buat Kivy
+# Use NDK 25b for best stability
 android.ndk = 25b
 
 # (list) The Android archs to build for
@@ -56,7 +56,7 @@ android.archs = arm64-v8a, armeabi-v7a
 # (bool) enables Android auto backup feature
 android.allow_backup = True
 
-# (bool) Otomatis terima lisensi SDK
+# (bool) Automatically accept SDK license
 android.accept_sdk_license = True
 
 #
