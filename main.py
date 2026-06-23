@@ -125,7 +125,7 @@ class PhotoDetectorApp(MDApp):
 
         try:
             # GANTI IP INI DENGAN IP LAPTOP LU
-            TARGET_URL = "http://10.0.42.92:5000/api/upload"
+            TARGET_URL = "http://10.45.56.214:5000/api/upload"
 
             payload = {
                 "hardware_latitude": self.current_lat,
