@@ -12,6 +12,9 @@ from plyer import gps
 
 
 class PhotoDetectorApp(MDApp):
+
+    GPS_TIMEOUT_SECONDS = 30
+
     def build(self):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Blue"
@@ -36,12 +39,12 @@ class PhotoDetectorApp(MDApp):
 
         self.current_lat = None
         self.current_lon = None
+        self._gps_timeout_event = None
 
         return self.layout
 
     def on_start(self):
         # WAJIB: minta runtime permission SEBELUM kamera/gps dipakai.
-        # Tanpa ini, widget Camera atau gps.start() bisa force-close di Android 6+.
         if platform == 'android':
             from android.permissions import request_permissions, Permission, check_permission
 
@@ -50,8 +53,6 @@ class PhotoDetectorApp(MDApp):
                 Permission.ACCESS_FINE_LOCATION,
                 Permission.ACCESS_COARSE_LOCATION,
             ]
-            # WRITE/READ_EXTERNAL_STORAGE sudah deprecated efektif di API 30+,
-            # jadi kita skip minta itu di runtime (tetap boleh di manifest untuk API lama).
 
             missing = [p for p in needed if not check_permission(p)]
             if missing:
@@ -71,8 +72,6 @@ class PhotoDetectorApp(MDApp):
             )
 
     def init_camera(self):
-        # Import Camera di sini (lazy), supaya tidak coba buka device kamera
-        # sebelum permission benar-benar granted.
         from kivy.uix.camera import Camera
 
         if self.camera_widget is None:
@@ -86,42 +85,68 @@ class PhotoDetectorApp(MDApp):
             return
 
         self.result_label.text = "Mencari sinyal GPS (Menunggu lock...)"
-        # Reset dulu biar gak pake data lama
         self.current_lat = None
         self.current_lon = None
-        
+
+        # Batalkan timeout event lama kalau ada sisa dari capture sebelumnya,
+        # supaya gak numpuk timer dan gak ke-trigger di waktu yang salah.
+        self._cancel_gps_timeout()
+
         try:
             gps.configure(on_location=self.on_gps_location, on_status=self.on_gps_status)
             gps.start()
-            # Kita TIDAK pake trigger_capture di sini! 
-            # Kita biarkan on_gps_location yang memanggil trigger_capture nanti.
+
+            # INI YANG SEBELUMNYA HILANG: timeout 30s harus benar-benar dijadwalkan
+            # di sini, kalau tidak, app akan menunggu on_gps_location selamanya
+            # kalau GPS tidak pernah memberi fix.
+            self._gps_timeout_event = Clock.schedule_once(
+                self.gps_timeout, self.GPS_TIMEOUT_SECONDS
+            )
         except Exception as e:
             self.result_label.text = f"GPS gagal: {str(e)}\nMengambil foto tanpa GPS..."
             Clock.schedule_once(self.trigger_capture, 1.0)
 
     def on_gps_location(self, **kwargs):
-        # Kalau sudah dapet data, ambil fotonya SEKARANG
+        # Kalau timeout sudah lebih dulu jalan (race condition), abaikan callback
+        # supaya trigger_capture tidak terpanggil dua kali.
+        if self._gps_timeout_event is None:
+            return
+
         self.current_lat = kwargs.get('lat')
         self.current_lon = kwargs.get('lon')
-        
-        # Stop GPS biar gak boros batere
+
+        self._cancel_gps_timeout()
+
         try:
             gps.stop()
-        except:
+        except Exception:
             pass
-            
-        # Panggil capture setelah lokasi dapet (kasih delay 0.5s biar GPS stabil)
-        self.result_label.text = f"GPS Terkunci: {self.current_lat}, {self.current_lon}\nMengambil foto..."
+
+        self.result_label.text = (
+            f"GPS Terkunci: {self.current_lat}, {self.current_lon}\nMengambil foto..."
+        )
         Clock.schedule_once(self.trigger_capture, 0.5)
 
-    # Tambahkan safety: Kalau GPS gak dapet-dapet dalam 30 detik, ambil foto saja
-    def start_timeout_check(self):
-        Clock.schedule_once(self.gps_timeout, 30.0)
+    def on_gps_status(self, stype, status):
+        # Berguna untuk debugging: status provider GPS (misalnya "provider-disabled").
+        # Tampilkan sementara di label biar kelihatan progress-nya, tanpa
+        # mengganggu countdown timeout.
+        print(f"[GPS STATUS] {stype}: {status}")
 
     def gps_timeout(self, dt):
+        self._gps_timeout_event = None
         if self.current_lat is None:
+            try:
+                gps.stop()
+            except Exception:
+                pass
             self.result_label.text = "GPS Timeout. Mengambil foto tanpa lokasi..."
             self.trigger_capture(0)
+
+    def _cancel_gps_timeout(self):
+        if self._gps_timeout_event is not None:
+            self._gps_timeout_event.cancel()
+            self._gps_timeout_event = None
 
     def trigger_capture(self, dt):
         try:
