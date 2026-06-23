@@ -13,6 +13,13 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
+    # --- INI DIA OBATNYA: PAKSA GITHUB PAKE JAVA 17 ---
+    - name: Set up Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
     # --- KITA KEMBALIKAN KE 3.11 BIAR SAMA KAYAK BUILDOZER.SPEC ---
     - name: Set up Python 3.11.4
       uses: actions/setup-python@v5
@@ -31,6 +38,7 @@ jobs:
 
     - name: Build APK with Buildozer
       run: |
+        export JAVA_HOME=$JAVA_HOME_17_X64
         buildozer android debug
       env:
         TERM: xterm
