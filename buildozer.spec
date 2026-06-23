@@ -51,7 +51,7 @@ android.ndk_api = 21
 android.ndk = 25b
 
 # (list) The Android archs to build for
-android.archs = arm64-v8a, armeabi-v7a
+android.archs = arm64-v8a
 
 # (bool) enables Android auto backup feature
 android.allow_backup = True
