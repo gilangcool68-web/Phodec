@@ -29,13 +29,15 @@ orientation = portrait
 
 #
 # Android specific
-#
+
+# (bool) If True, then skip trying to update the Android sdk
+android.allow_cleartext_traffic = True
 
 # (bool) Indicate if the application should be fullscreen or not
 fullscreen = 0
 
 # Android permissions
-android.permissions = CAMERA, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
+android.permissions = INTERNET, CAMERA, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
 
 # (int) Target Android API
 android.api = 31
