@@ -114,9 +114,9 @@ class PhotoDetectorApp(MDApp):
         self.result_label.text = f"GPS Terkunci: {self.current_lat}, {self.current_lon}\nMengambil foto..."
         Clock.schedule_once(self.trigger_capture, 0.5)
 
-    # Tambahkan safety: Kalau GPS gak dapet-dapet dalam 10 detik, ambil foto saja
+    # Tambahkan safety: Kalau GPS gak dapet-dapet dalam 30 detik, ambil foto saja
     def start_timeout_check(self):
-        Clock.schedule_once(self.gps_timeout, 10.0)
+        Clock.schedule_once(self.gps_timeout, 30.0)
 
     def gps_timeout(self, dt):
         if self.current_lat is None:
