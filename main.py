@@ -82,32 +82,46 @@ class PhotoDetectorApp(MDApp):
 
     def start_gps_and_capture(self, instance):
         if self.camera_widget is None:
-            self.result_label.text = "Kamera belum siap (izin belum diberikan)."
+            self.result_label.text = "Kamera belum siap."
             return
 
-        self.result_label.text = "Mencari sinyal GPS dan mengunci lokasi..."
+        self.result_label.text = "Mencari sinyal GPS (Menunggu lock...)"
+        # Reset dulu biar gak pake data lama
+        self.current_lat = None
+        self.current_lon = None
+        
         try:
             gps.configure(on_location=self.on_gps_location, on_status=self.on_gps_status)
             gps.start()
-            Clock.schedule_once(self.trigger_capture, 2.0)
-        except NotImplementedError:
-            self.result_label.text = "Hardware GPS tidak terdeteksi (Menjalankan mode kamera standar)..."
-            Clock.schedule_once(self.trigger_capture, 1.0)
+            # Kita TIDAK pake trigger_capture di sini! 
+            # Kita biarkan on_gps_location yang memanggil trigger_capture nanti.
         except Exception as e:
-            # Tangkap semua exception GPS lain (permission, dsb) biar gak force close
-            self.result_label.text = f"GPS gagal start: {str(e)}\nLanjut ambil foto saja..."
+            self.result_label.text = f"GPS gagal: {str(e)}\nMengambil foto tanpa GPS..."
             Clock.schedule_once(self.trigger_capture, 1.0)
 
     def on_gps_location(self, **kwargs):
+        # Kalau sudah dapet data, ambil fotonya SEKARANG
         self.current_lat = kwargs.get('lat')
         self.current_lon = kwargs.get('lon')
+        
+        # Stop GPS biar gak boros batere
         try:
             gps.stop()
-        except Exception:
+        except:
             pass
+            
+        # Panggil capture setelah lokasi dapet (kasih delay 0.5s biar GPS stabil)
+        self.result_label.text = f"GPS Terkunci: {self.current_lat}, {self.current_lon}\nMengambil foto..."
+        Clock.schedule_once(self.trigger_capture, 0.5)
 
-    def on_gps_status(self, stype, status):
-        pass
+    # Tambahkan safety: Kalau GPS gak dapet-dapet dalam 10 detik, ambil foto saja
+    def start_timeout_check(self):
+        Clock.schedule_once(self.gps_timeout, 10.0)
+
+    def gps_timeout(self, dt):
+        if self.current_lat is None:
+            self.result_label.text = "GPS Timeout. Mengambil foto tanpa lokasi..."
+            self.trigger_capture(0)
 
     def trigger_capture(self, dt):
         try:
