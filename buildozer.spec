@@ -19,7 +19,7 @@ source.include_exts = py,png,jpg,kv,atlas,pxi
 version = 0.1
 
 # (str) Icon of the application
-icon.filename = uploads/icon.png
+icon.filename = %(source.dir)s/uploads/icon.png
 
 # Use compatible versions with Android wheel support
 requirements = python3==3.11.4,hostpython3==3.11.4,kivy==2.3.0,kivymd==1.2.0,pillow,requests,plyer
